@@ -1,2 +1,1 @@
-dbc_stackoverflow
-=================
+## A StackOverflow Clone done in Rails ##
