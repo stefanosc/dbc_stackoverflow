@@ -31,6 +31,13 @@ group :development, :test do
   gem 'capybara'
   gem 'shoulda-matchers'
   gem 'factory_girl'
+  gem 'pry'
+  gem 'pry-byebug'
+  gem 'faker'
+end
+
+group :test do
+  gem "database_cleaner"
 end
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
