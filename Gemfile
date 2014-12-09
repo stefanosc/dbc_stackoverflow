@@ -35,6 +35,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'faker'
+  gem 'simplecov', :require => false
 end
 
 group :test do
