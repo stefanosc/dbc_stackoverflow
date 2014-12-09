@@ -82,6 +82,7 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+  config.order = :random
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
