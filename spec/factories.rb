@@ -1,13 +1,12 @@
 FactoryGirl.define do
   factory :question do
-    title
-    content
+    title "title"
+    content "content"
   end
 
   # This will use the User class (Admin would have been guessed)
   factory :answer do
-    first_name "Admin"
-    last_name  "User"
-    admin      true
+    title "title"
+    content  "content"
   end
 end
