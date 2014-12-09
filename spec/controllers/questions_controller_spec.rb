@@ -23,6 +23,7 @@ RSpec.describe QuestionsController, :type => :controller do
 
   describe "GET show" do
     let(:question) { Question.create(title: "question1", content: "nice") }
+    let(:answer) { question.answers.create(title: "Answer", content: "nice") }
     subject { get :show, id: question.id }
 
     it "returns http success" do
@@ -35,6 +36,11 @@ RSpec.describe QuestionsController, :type => :controller do
     it "assigns the requested question to the @question variable" do
       get :show, id: question.id
       expect(assigns(:question)).to eq(question)
+    end
+
+    it "assigns the answers to requested question to the @answers variable" do
+      get :show, id: question.id
+      expect(assigns(:answers)).to eq([answer])
     end
   end
 
