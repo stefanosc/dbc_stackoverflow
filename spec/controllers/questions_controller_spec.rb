@@ -22,13 +22,19 @@ RSpec.describe QuestionsController, :type => :controller do
   end
 
   describe "GET show" do
-    subject { get :show }
+    let(:question) { Question.create(title: "question1", content: "nice") }
+    subject { get :show, id: question.id }
 
     it "returns http success" do
       expect(response).to have_http_status(:success)
     end
     it "renders the index template" do
       expect(subject).to render_template(:show)
+    end
+
+    it "assigns the requested question to the @question variable" do
+      get :show, id: question.id
+      expect(assigns(:question)).to eq(question)
     end
   end
 
