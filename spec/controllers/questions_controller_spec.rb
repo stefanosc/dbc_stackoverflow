@@ -29,7 +29,7 @@ RSpec.describe QuestionsController, :type => :controller do
   describe "GET show" do
     let(:question) { Question.create(title: "question1", content: "nice") }
     let(:answer) { question.answers.create(title: "Answer", content: "nice") }
-    subject { get :show, id: question.id }
+    subject { get :show, id: question }
 
     it "returns http success" do
       expect(response).to have_http_status(:success)
@@ -39,18 +39,18 @@ RSpec.describe QuestionsController, :type => :controller do
     end
 
     it "instantiate a new @answer" do
-      get :show, id: question
+      subject
       expect(assigns(:answer)).to be_new_record
     end
 
     it "assigns the requested question to the @question variable" do
-      get :show, id: question.id
+      subject
       expect(assigns(:question)).to eq(question)
     end
 
-    it "assigns the answers to requested question to the @answers variable" do
-      get :show, id: question.id
-      expect(assigns(:answers)).to eq([answer])
+    it "assigns the answers of the requested question to the @answers variable" do
+      subject
+      expect(assigns(:answers)).to match([answer])
     end
   end
 
