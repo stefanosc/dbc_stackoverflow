@@ -28,7 +28,7 @@ RSpec.describe QuestionsController, :type => :controller do
 
   describe "GET show" do
     let(:question) { Question.create(title: "question1", content: "nice") }
-    let(:answer) { question.answers.create(title: "Answer", content: "nice") }
+    let!(:answer) { question.answers.create(title: "Answer", content: "nice") }
     subject { get :show, id: question }
 
     it "returns http success" do
@@ -50,7 +50,7 @@ RSpec.describe QuestionsController, :type => :controller do
 
     it "assigns the answers of the requested question to the @answers variable" do
       subject
-      expect(assigns(:answers)).to match([answer])
+      expect(assigns(:answers)).to include(answer)
     end
   end
 
