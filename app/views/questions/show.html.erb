@@ -1,7 +1,11 @@
-<h1><%= @question.title %></h1>
-<div>
-  <%= @question.content %>
+<div class="container">
+  <h1><%= @question.title %></h1>
+  <div>
+    <%= @question.content %>
+  </div>
+  <%= link_to "edit question", edit_question_path(@question) %>
 </div>
+
 
 <div class="container answers">
   <% @answers.each do |answer| %>

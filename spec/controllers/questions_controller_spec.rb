@@ -49,6 +49,24 @@ RSpec.describe QuestionsController, :type => :controller do
     end
   end
 
+
+  describe "GET edit" do
+    let(:question) { Question.create(title: "question1", content: "nice") }
+    subject { get :edit, id: question }
+
+    it "returns http success" do
+      expect(response).to have_http_status(:success)
+    end
+    it "renders the index template" do
+      expect(subject).to render_template(:edit)
+    end
+
+    it "assigns the requested question to the @question variable" do
+      subject
+      expect(assigns(:question)).to eq(question)
+    end
+  end
+
    describe "POST create" do
     context "with valid attributes" do
       let(:attrs) { FactoryGirl.attributes_for(:question) }
@@ -76,6 +94,44 @@ RSpec.describe QuestionsController, :type => :controller do
       end
       it "renders the question/show template" do
         expect(response).to render_template :index
+      end
+      it "sets a flash success message" do
+        expect(flash[:danger]).not_to be nil
+      end
+    end
+  end
+
+   describe "PATCH update" do
+    context "with valid attributes" do
+      let(:question) { FactoryGirl.create(:question) }
+      let(:attrs) { FactoryGirl.attributes_for(:question) }
+      before { patch :update, {id: question, question: attrs} }
+
+      it "updates the question in the database" do
+        updated_question = Question.find_by(id: question.id)
+        expect(updated_question.title).to eq(attrs[:title])
+        expect(updated_question.content).to eq(attrs[:content])
+      end
+
+      it "redirects question_path" do
+        question = Question.last
+        expect(response).to redirect_to question
+      end
+      it "sets a flash success message" do
+        expect(flash[:success]).not_to be nil
+      end
+    end
+
+    context "with invalid attributes" do
+      let(:question) { FactoryGirl.create(:question) }
+      let(:attrs) { FactoryGirl.attributes_for(:invalid_question) }
+      before { patch :update, {id: question, question: attrs} }
+
+      it "does NOT update the question in the database" do
+        expect(Question.last).to eq(question)
+      end
+      it "renders the question/show template" do
+        expect(response).to render_template :edit
       end
       it "sets a flash success message" do
         expect(flash[:danger]).not_to be nil

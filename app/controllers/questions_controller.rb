@@ -25,11 +25,31 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def edit
+    @question = find_question
+  end
+
+  def update
+    if @question = find_question
+      if @question.update_attributes(question_params)
+        redirect_to @question
+        flash[:success] = "Successfully updated question"
+      else
+        flash[:danger] = ""
+        @question.errors.full_messages.each do |msg|
+          flash[:danger] << msg + ", "
+        end
+        render :edit
+      end
+    end
+  end
 
   private
     def question_params
       params.require(:question).permit(:title,:content)
     end
 
-
+    def find_question
+      Question.find_by(id: params[:id])
+    end
 end
