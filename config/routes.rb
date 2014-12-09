@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   root :to => 'questions#index'
 
-  resources :questions, except: [:index]
+  resources :questions, except: [:index] do
+    resources :answers
+  end
 
 
   # The priority is based upon order of creation: first created -> highest priority.

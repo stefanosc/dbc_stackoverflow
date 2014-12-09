@@ -5,6 +5,11 @@ RSpec.describe QuestionsController, :type => :controller do
   describe "GET index" do
     subject { get :index }
 
+    it "instantiate a new @question" do
+      get :index
+      expect(assigns(:question)).to be_new_record
+    end
+
     it "returns http success" do
       expect(response).to have_http_status(:success)
     end
@@ -31,6 +36,11 @@ RSpec.describe QuestionsController, :type => :controller do
     end
     it "renders the index template" do
       expect(subject).to render_template(:show)
+    end
+
+    it "instantiate a new @answer" do
+      get :show, id: question
+      expect(assigns(:answer)).to be_new_record
     end
 
     it "assigns the requested question to the @question variable" do
