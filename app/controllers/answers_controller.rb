@@ -18,7 +18,7 @@ class AnswersController < ApplicationController
       @answers = @question.answers
       flash[:danger] = ""
       @answer.errors.full_messages.each do |msg|
-        flash[:danger] << msg + ", "
+        flash.now[:danger] << msg + ", "
       end
       render "questions/show"
     end
@@ -31,6 +31,16 @@ class AnswersController < ApplicationController
   end
 
   def destroy
+    if answer = Answer.find_by(id: params[:id])
+      answer.destroy
+      flash[:success] = "Succefully deleted answer"
+      redirect_to :back
+    else
+      @question = Question.includes(:answers).find_by(id: params[:question_id])
+      @answers = @question.answers
+      flash.now[:danger] = "Cannot find answer to delete"
+      render "questions/show"
+    end
   end
 
   private

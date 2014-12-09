@@ -38,11 +38,6 @@ RSpec.describe QuestionsController, :type => :controller do
       expect(subject).to render_template(:show)
     end
 
-    it "instantiate a new @answer" do
-      subject
-      expect(assigns(:answer)).to be_new_record
-    end
-
     it "assigns the requested question to the @question variable" do
       subject
       expect(assigns(:question)).to eq(question)
@@ -51,6 +46,40 @@ RSpec.describe QuestionsController, :type => :controller do
     it "assigns the answers of the requested question to the @answers variable" do
       subject
       expect(assigns(:answers)).to include(answer)
+    end
+  end
+
+   describe "POST create" do
+    context "with valid attributes" do
+      let(:attrs) { FactoryGirl.attributes_for(:question) }
+      before { post :create, question: attrs }
+
+      it "saves the question to the database" do
+        expect(Question.count).to eq(1)
+      end
+
+      it "redirects question_path" do
+        question = Question.last
+        expect(response).to redirect_to question_path(question)
+      end
+      it "sets a flash success message" do
+        expect(flash[:success]).not_to be nil
+      end
+    end
+
+    context "with invalid attributes" do
+      let(:attrs) { FactoryGirl.attributes_for(:invalid_question) }
+      before { post :create, question: attrs }
+
+      it "does NOT save the question to the database" do
+        expect(Question.count).to eq(0)
+      end
+      it "renders the question/show template" do
+        expect(response).to render_template :index
+      end
+      it "sets a flash success message" do
+        expect(flash[:danger]).not_to be nil
+      end
     end
   end
 
