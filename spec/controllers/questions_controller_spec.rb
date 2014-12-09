@@ -128,7 +128,7 @@ RSpec.describe QuestionsController, :type => :controller do
       before { patch :update, {id: question, question: attrs} }
 
       it "does NOT update the question in the database" do
-        expect(Question.last).to eq(question)
+        expect(Question.last ).to eq(question)
       end
       it "renders the question/show template" do
         expect(response).to render_template :edit
