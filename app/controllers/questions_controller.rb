@@ -2,7 +2,6 @@ class QuestionsController < ApplicationController
   def index
     @question = Question.new
     @questions = Question.all
-    # @quote = GithubZen.get_quote
   end
 
   def show
