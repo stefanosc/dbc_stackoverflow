@@ -1,5 +1,6 @@
 <div class="container">
   <h1><%= @question.title %></h1>
+  <h3>votes: <%= @question.votes %></h3><%= link_to "⇞", vote_question_path(@question, vote: 1), method: :patch  %><%= link_to "⇟", vote_question_path(@question, vote: -1), method: :patch %>
   <div>
     <%= @question.content %>
   </div>

@@ -3,7 +3,14 @@ Rails.application.routes.draw do
   root :to => 'questions#index'
 
   resources :questions, except: [:index] do
-    resources :answers
+    member do
+      patch :vote
+    end
+    resources :answers do
+      member do
+        patch :vote
+      end
+    end
   end
 
 

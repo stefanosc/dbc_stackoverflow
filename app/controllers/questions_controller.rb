@@ -44,6 +44,23 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def vote
+    if @question = find_question
+      vote = params[:vote].to_i
+      @question.votes += vote
+      if @question.save
+        flash[:success] = "Successfully registered vote"
+      else
+        flash[:danger] = "There was a problem with your vote doge"
+      end
+      redirect_to @question
+    else
+      flash[:danger] = "There was a problem with your vote doge"
+      redirect_to :back
+    end
+
+  end
+
   private
     def question_params
       params.require(:question).permit(:title,:content)

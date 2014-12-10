@@ -56,25 +56,51 @@ RSpec.describe AnswersController, :type => :controller do
     end
   end
 
-  # describe "GET edit" do
-  #   it "returns http success" do
-  #     get :edit
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
 
-  # describe "GET update" do
-  #   it "returns http success" do
-  #     get :update
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe "DELETE destroy" do
+    context "with a valid answer id" do
+      let(:answer) { FactoryGirl.create(:answer) }
+      before do
+        request.env["HTTP_REFERER"] = question_url(answer.question)
+        delete :destroy, id: answer.id, question_id: answer.question
+      end
 
-  # describe "GET destroy" do
-  #   it "returns http success" do
-  #     get :destroy
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+      it "deletes the answer from the database" do
+        expect(Answer.count).to eq(0)
+      end
+      it "redirects question_path" do
+        expect(response).to redirect_to :back
+      end
+      it "sets a flash success message" do
+        expect(flash[:success]).not_to be nil
+      end
+    end
+
+    context "with an invalid answer id" do
+      let(:answer) { FactoryGirl.create(:answer) }
+      before do
+        request.env["HTTP_REFERER"] = question_url(answer.question)
+        delete :destroy, id: "invalid_id", question_id: answer.question
+      end
+
+      it "Does NOT delete the answer from the database" do
+        expect(Answer.count).to eq(1)
+      end
+      it "redirects question_path" do
+        expect(response).to render_template("questions/show")
+      end
+      it "sets a flash success message" do
+        expect(flash.now[:danger]).not_to be nil
+      end
+      it "assigns the question of the answer to the @question variable" do
+        expect(assigns(:question)).to eq(answer.question)
+      end
+
+      it "assigns the answers of the question to the @answers variable" do
+        expect(assigns(:answers)).to include(answer)
+      end
+    end
+
+  end
 
 end
