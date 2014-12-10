@@ -7,6 +7,11 @@ gem 'rails', '4.1.8'
 gem 'pg'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
+
+gem 'bootstrap-sass', '~> 3.3.1'
+gem 'autoprefixer-rails'
+gem "haml-rails"
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
@@ -26,8 +31,8 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
 gem 'httparty'
-
-
+gem 'bootstrap_form'
+gem "erb2haml", :group => :development
 group :development, :test do
   gem 'dotenv-rails'
   gem 'rspec-rails'
@@ -39,10 +44,10 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'faker'
   gem 'simplecov', :require => false
-  gem 'webmock'
 end
 
 group :test do
+  gem 'webmock'
   gem "database_cleaner"
 end
 # Use ActiveModel has_secure_password
