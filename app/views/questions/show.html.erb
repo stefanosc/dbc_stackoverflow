@@ -12,6 +12,8 @@
   <% @answers.each do |answer| %>
     <div class="answer">
       <h2><%= answer.title %></h2>
+      <h3>votes: <%= answer.votes %></h3><%= link_to "⇞", vote_question_answer_path(@question, answer, vote: 1), method: :patch  %><%= link_to "⇟", vote_question_answer_path(@question, answer, vote: -1), method: :patch %>
+
       <%= link_to "delete", ([@question, answer]), method: :delete %>
       <p>
         <%= answer.content %>

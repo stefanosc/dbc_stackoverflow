@@ -103,4 +103,42 @@ RSpec.describe AnswersController, :type => :controller do
 
   end
 
+   describe "PATCH vote" do
+    context "with a valid answer id" do
+      let(:answer) { FactoryGirl.create(:answer) }
+      subject {patch :vote, id: answer, question_id: answer.question , vote: 1}
+
+      it "updates the answer vote count in the database" do
+        expect{subject}.to change{answer.reload.votes}.by(1)
+      end
+      it "redirects question_path" do
+        subject
+        expect(response).to redirect_to question_path(answer.question)
+      end
+      it "sets a flash success message" do
+        subject
+        expect(flash[:success]).not_to be nil
+      end
+    end
+
+    context "with an invalid question id" do
+      let(:answer) { FactoryGirl.create(:answer) }
+      before { request.env["HTTP_REFERER"] = question_url(answer.question) }
+      subject {patch :vote, {id: "invalid id", question_id: answer.question, vote: 1}}
+
+      it "Does NOT update the answer vote count in the database" do
+        expect{subject}.not_to change{answer.reload.votes}
+      end
+      it "redirects to back" do
+        subject
+        expect(response).to redirect_to :back
+      end
+      it "sets a flash danger message" do
+        subject
+        expect(flash[:danger]).not_to be nil
+      end
+    end
+
+  end
+
 end

@@ -9,7 +9,7 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @question = find_question_from_params
+    @question = find_question
     @answer = @question.answers.build(answer_params)
     if @answer.save
       redirect_to question_path(@question)
@@ -43,13 +43,31 @@ class AnswersController < ApplicationController
     end
   end
 
+  def vote
+    if @answer = Answer.find_by(id: params[:id])
+      @question = find_question
+      vote = params[:vote].to_i
+      @answer.votes += vote
+      if @answer.save
+        flash[:success] = "Successfully registered vote"
+      else
+        flash[:danger] = "There was a problem with your vote doge"
+      end
+      redirect_to @question
+    else
+      flash[:danger] = "There was a problem with your vote doge"
+      redirect_to :back
+    end
+
+  end
+
   private
 
   def answer_params
     params.require(:answer).permit(:title,:content)
   end
 
-  def find_question_from_params
+  def find_question
     Question.find_by(id: params[:question_id])
   end
 end
