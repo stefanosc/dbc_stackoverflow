@@ -14,12 +14,17 @@ RSpec.describe GithubZen, :type => :helper do
 
   describe "GithubZen.get_quote" do
     context "when not rate limited" do
-  WebMock.stub_request(:get, "https://overflow-api:12345678o@api.github.com/zen").
-    with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-    to_return(:status => 200, :body => "dsaf", :headers => {})
-
+      WebMock.stub_request(:get, "https://overflow-api:12345678o@api.github.com/zen").with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).to_return(:status => 200, :body => "random quote", :headers => {})
+      it "returns a new random quote" do
+        expect(GithubZen.get_quote).to  eq("random quote")
+      end
+    end
+    context "when rate limited" do
+      WebMock.stub_request(:get, "https://overflow-api:12345678o@api.github.com/zen").with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).to_return(:status => 403, :body => "from the array of built in quotes", :headers => {})
+      it "returns a quote from the array of built" do
+        expect(GithubZen.get_quote).to eq("from the array of built in quotes")
+      end
     end
   end
 
-  p GithubZen.get_quote
 end
