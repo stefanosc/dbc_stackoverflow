@@ -1,0 +1,12 @@
+.row
+  .col-sm-1
+    = link_to vote_question_answer_path(@question, answer, vote: 1), method: :patch do
+      %i.glyphicon.glyphicon-thumbs-up
+    .vote= answer.votes
+    = link_to vote_question_answer_path(@question, answer, vote: -1), method: :patch do
+      %i.glyphicon.glyphicon-thumbs-down
+  .col-sm-5
+    %h2= answer.title
+    %p= answer.content
+    = link_to "delete", ([@question, answer]), method: :delete
+

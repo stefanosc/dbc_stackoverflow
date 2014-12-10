@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   def index
     @question = Question.new
     @questions = Question.all
-    @quote = GithubZen.get_quote
+    # @quote = GithubZen.get_quote
   end
 
   def show
@@ -12,17 +12,29 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params)
-    if @question.save
-      redirect_to @question
-      flash[:success] = "Successfully created question"
-    else
-      @question = Question.new
-      @questions = Question.all
-      flash[:danger] = ""
-      @question.errors.full_messages.each do |msg|
-        flash[:danger] << msg + ", "
+    respond_to do |format|
+      if @question.save
+        format.html do
+          redirect_to @question
+          flash[:success] = "Successfully created question"
+        end
+        format.json do
+          render json: @question, :status => :created
+        end
+      else
+        format.html do
+          @question = Question.new
+          @questions = Question.all
+          flash[:danger] = ""
+          @question.errors.full_messages.each do |msg|
+            flash[:danger] << msg + ", "
+          end
+          render :index
+        end
+        format.json do
+          render :json => @question.errors.full_messages, :status => :unprocessable_entity
+        end
       end
-      render :index
     end
   end
 

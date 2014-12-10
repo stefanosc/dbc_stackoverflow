@@ -1,0 +1,11 @@
+.row
+  .col-sm-1
+    = link_to vote_question_path(question, vote: 1), method: :patch do
+      %i.glyphicon.glyphicon-thumbs-up
+    .vote= question.votes
+    = link_to vote_question_path(question, vote: -1), method: :patch do
+      %i.glyphicon.glyphicon-thumbs-down
+  .col-sm-5
+    %h1= question.title
+    = question.content
+    = link_to "edit question", edit_question_path(question)

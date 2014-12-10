@@ -6,7 +6,7 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body
-    %nav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
+    %nav.navbar.navbar-default.navbar-top{:role => "navigation"}
     .container
       .navbar-header
         %button.navbar-toggle.collapsed{"aria-controls" => "navbar", "aria-expanded" => "false", "data-target" => "#navbar", "data-toggle" => "collapse", :type => "button"}
@@ -18,7 +18,7 @@
       #navbar.collapse.navbar-collapse
         %ul.nav.navbar-nav
           %li=link_to "OoOverflow", root_path, class: "navbar-brand"
-          %li Today Zen Quote: #{@quote}
+          %li Today Zen Quote: #{GithubZen.get_quote}
 
     = render "shared/flash_messages"
     .container= yield
