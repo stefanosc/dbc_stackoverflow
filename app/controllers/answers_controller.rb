@@ -11,16 +11,28 @@ class AnswersController < ApplicationController
   def create
     @question = find_question
     @answer = @question.answers.build(answer_params)
-    if @answer.save
-      redirect_to question_path(@question)
-      flash[:success] = "Successfully created answer"
-    else
-      @answers = @question.answers
-      flash[:danger] = ""
-      @answer.errors.full_messages.each do |msg|
-        flash.now[:danger] << msg + ", "
+    respond_to do |format|
+      if @answer.save
+        format.html do
+          redirect_to question_path(@question)
+          flash[:success] = "Successfully created answer"
+        end
+        format.json do
+          render json: @answer, :status => :created
+        end
+      else
+        format.html do
+          @answers = @question.answers
+          flash[:danger] = ""
+          @answer.errors.full_messages.each do |msg|
+            flash.now[:danger] << msg + ", "
+          end
+          render "questions/show"
+        end
+        format.json do
+          render :json => @answer.errors.full_messages, :status => :unprocessable_entity
+        end
       end
-      render "questions/show"
     end
   end
 
