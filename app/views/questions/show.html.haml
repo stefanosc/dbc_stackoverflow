@@ -1,0 +1,26 @@
+.container
+  %h1= @question.title
+  %h3
+    votes: #{@question.votes}
+  = link_to vote_question_path(@question, vote: 1), method: :patch do
+    %i.glyphicon.glyphicon-thumbs-up
+  = link_to vote_question_path(@question, vote: -1), method: :patch do
+    %i.glyphicon.glyphicon-thumbs-down
+  %div
+    = @question.content
+  = link_to "edit question", edit_question_path(@question)
+.container.answers
+  - @answers.each do |answer|
+    .answer
+      %h2= answer.title
+      %h3
+        votes: #{answer.votes}
+      = link_to vote_question_answer_path(@question, answer, vote: 1),class: "btn btn-default", method: :patch do
+        %i.glyphicon.glyphicon-thumbs-up
+      = link_to vote_question_answer_path(@question, answer, vote: -1), class: "btn btn-default", method: :patch do
+        %i.glyphicon.glyphicon-thumbs-down
+      = link_to "delete", ([@question, answer]), method: :delete
+      %p
+        = answer.content
+%h3 Answer this question
+= render "answers/answer_form"
