@@ -18,7 +18,15 @@ var compiled = _.template(answer_template);
 $(document).on('page:change', function() {
   $("#new_answer").on('ajax:success', function(event, data, status, xhr) {
     var lastAnswer = $('.container.answers .row').last();
-    // debugger
     lastAnswer.after($(compiled(data)));
+  }).on('ajax:error', function(event, xhr, status, error) {
+    var errorsArray = $.parseJSON(xhr.responseText);
+    var errorLi = '';
+    $.each(errorsArray, function(index, val) {
+      errorLi += '<li>'+ val + '</li>';
+    });
+    errorDiv = $(".alert.alert-danger#answer-form");
+    errorDiv.html($(errorLi));
+    errorDiv.show(500).delay(2500).hide(500);
   });
 });

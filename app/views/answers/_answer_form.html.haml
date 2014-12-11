@@ -1,4 +1,5 @@
 %h3 Answer this question
+.alert.alert-danger#answer-form{style:"display:none;"}
 = bootstrap_form_for([@question,  @question.answers.build], layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-5", remote: true, format: :json) do |f|
   = f.text_field :title
   = f.text_area :content, size: "60x12"
