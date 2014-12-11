@@ -5,6 +5,22 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
+    <script type="text/template" id="answer-template">
+    <div class="row">
+    <div class="col-sm-1 answer-vote-container">
+    <a class="answer-vote-up" data-method="patch" data-remote="true" href="/questions/<%= question_id %>/answers/<%= id %>/vote.json?vote=1" rel="nofollow"><i class="glyphicon glyphicon-thumbs-up"></i>
+    </a>
+    <div class="vote" id="answer<%= id %>"><%= votes %></div>
+    <a class="answer-vote-down" data-method="patch" data-remote="true" href="/questions/<%= question_id %>/answers/<%= id %>/vote.json?vote=-1" rel="nofollow"><i class="glyphicon glyphicon-thumbs-down"></i>
+    </a>
+    </div>
+    <div class="col-sm-5">
+    <h2><%= title %></h2>
+    <p><%= content %></p>
+    <a data-method="delete" href="/questions/<%= question_id %>/answers/<%= id %>" rel="nofollow">delete</a>
+    </div>
+    </div>
+    </script>
   %body
     %nav.navbar.navbar-default.navbar-top{:role => "navigation"}
     .container

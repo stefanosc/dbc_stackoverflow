@@ -1,25 +1,13 @@
-var answer_template = '<div class="row">' +
-                        '<div class="col-sm-1">' +
-                          '<a data-method="patch" href="/questions/<%= question_id %>/answers/<%= id %>/vote?vote=1" rel="nofollow"><i class="glyphicon glyphicon-thumbs-up"></i>' +
-                          '</a>' +
-                          '<div class="vote"><%= votes %></div>' +
-                          '<a data-method="patch" href="/questions/<%= question_id %>/answers/<%= id %>/vote?vote=-1" rel="nofollow"><i class="glyphicon glyphicon-thumbs-down"></i>'+
-                          '</a>'+
-                        '</div>'+
-                        '<div class="col-sm-5">' +
-                          '<h2><%= title %></h2>'+
-                          '<p><%= content %></p>' +
-                          '<a data-method="delete" href="/questions/<%= question_id %>/answers/<%= id %>" rel="nofollow">delete</a>'+
-                        '</div>'+
-                      '</div>';
-
-var compiled = _.template(answer_template);
-
 $(document).on('page:change', function() {
-  $("#new_answer").on('ajax:success', function(event, data, status, xhr) {
+
+  function renderAnswer (event, data, status, xhr) {
+    var answer_template = $('script#answer-template').html();
+    var compiled = _.template(answer_template);
     var lastAnswer = $('.container.answers .row').last();
     lastAnswer.after($(compiled(data)));
-  }).on('ajax:error', function(event, xhr, status, error) {
+  }
+
+  function renderError (event, xhr, status, error) {
     var errorsArray = $.parseJSON(xhr.responseText);
     var errorLi = '';
     $.each(errorsArray, function(index, val) {
@@ -28,16 +16,19 @@ $(document).on('page:change', function() {
     errorDiv = $(".alert.alert-danger#answer-form");
     errorDiv.html($(errorLi));
     errorDiv.show(500).delay(2500).hide(500);
-  });
+  }
 
-  $(".answer-vote-container").on('ajax:success', ".answer-vote-up", function(event, data, status, xhr) {
+  function renderVote (event, data, status, xhr) {
     var voteElSelector = "div#answer" + data.id;
     $(voteElSelector).html(data.votes);
-  }).on('ajax:error', function(event, data, status, xhr) {
+  }
+
+  $("#new_answer").on('ajax:success', renderAnswer).on('ajax:error', renderError);
+
+  $(".answer-vote-container").on('ajax:success', ".answer-vote-up", renderVote)
+    .on('ajax:error', function(event, data, status, xhr) {
   });
-  $(".answer-vote-container").on('ajax:success', ".answer-vote-down", function(event, data, status, xhr) {
-    var voteElSelector = "div#answer" + data.id;
-    $(voteElSelector).html(data.votes);
-  }).on('ajax:error', function(event, data, status, xhr) {
+  $(".answer-vote-container").on('ajax:success', ".answer-vote-down", renderVote)
+    .on('ajax:error', function(event, data, status, xhr) {
   });
 });
