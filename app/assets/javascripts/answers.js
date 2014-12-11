@@ -29,4 +29,15 @@ $(document).on('page:change', function() {
     errorDiv.html($(errorLi));
     errorDiv.show(500).delay(2500).hide(500);
   });
+
+  $(".answer-vote-container").on('ajax:success', ".answer-vote-up", function(event, data, status, xhr) {
+    var voteElSelector = "div#answer" + data.id;
+    $(voteElSelector).html(data.votes);
+  }).on('ajax:error', function(event, data, status, xhr) {
+  });
+  $(".answer-vote-container").on('ajax:success', ".answer-vote-down", function(event, data, status, xhr) {
+    var voteElSelector = "div#answer" + data.id;
+    $(voteElSelector).html(data.votes);
+  }).on('ajax:error', function(event, data, status, xhr) {
+  });
 });

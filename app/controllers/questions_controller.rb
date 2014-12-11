@@ -57,20 +57,37 @@ class QuestionsController < ApplicationController
   end
 
   def vote
+    respond_to do |format|
     if @question = find_question
       vote = params[:vote].to_i
       @question.votes += vote
-      if @question.save
-        flash[:success] = "Successfully registered vote"
-      else
-        flash[:danger] = "There was a problem with your vote doge"
-      end
-      redirect_to @question
+        if @question.save
+          format.html do
+              flash[:success] = "Successfully registered vote"
+            redirect_to @question
+          end
+          format.json do
+            render json: {id: @question.id, votes: @question.votes}, :status => :created
+          end
+        else
+          format.html do
+            flash[:danger] = "There was a problem with your vote doge"
+            redirect_to @question
+          end
+          format.json do
+            render json: {id: @question.id, votes: @question.votes}, :status => :created
+          end
+        end
     else
-      flash[:danger] = "There was a problem with your vote doge"
-      redirect_to :back
+      format.html do
+        flash[:danger] = "There was a problem with your vote doge"
+        redirect_to :back
+      end
+      format.json do
+        render json: {id: @question.id, votes: @question.votes}, :status => :created
+      end
     end
-
+  end
   end
 
   private

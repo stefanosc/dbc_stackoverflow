@@ -1,9 +1,9 @@
 .row
-  .col-sm-1
-    = link_to vote_question_answer_path(@question, answer, vote: 1), method: :patch do
+  .col-sm-1.answer-vote-container
+    = link_to vote_question_answer_path(@question, answer, vote: 1, format: :json),method: :patch, remote: true, class: "answer-vote-up" do
       %i.glyphicon.glyphicon-thumbs-up
-    .vote= answer.votes
-    = link_to vote_question_answer_path(@question, answer, vote: -1), method: :patch do
+    .vote(id= "answer#{answer.id}")= answer.votes
+    = link_to vote_question_answer_path(@question, answer, vote: -1, format: :json),method: :patch, remote: true, class: "answer-vote-down" do
       %i.glyphicon.glyphicon-thumbs-down
   .col-sm-5
     %h2= answer.title
