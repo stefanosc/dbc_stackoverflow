@@ -1,5 +1,4 @@
 %h1 Awesome Questions
 = render "question_form"
-%ul#question-list
-  - @questions.each do |question|
-    %li= link_to question.title, question_path(question)
+.container.col-sm-12.questions
+  = render partial: "question_short", collection: @questions, as: :question

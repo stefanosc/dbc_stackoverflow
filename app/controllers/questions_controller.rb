@@ -90,6 +90,12 @@ class QuestionsController < ApplicationController
   end
   end
 
+  def destroy
+    question = find_question
+    question.destroy
+    redirect_to root_path
+  end
+
   private
     def question_params
       params.require(:question).permit(:title,:content)

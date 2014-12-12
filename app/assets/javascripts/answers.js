@@ -25,10 +25,10 @@ $(document).on('page:change', function() {
 
   $("#new_answer").on('ajax:success', renderAnswer).on('ajax:error', renderError);
 
-  $(".answer-vote-container").on('ajax:success', ".answer-vote-up", renderVote)
+  $(".answer-vote-container").on('ajax:success', ".answer-vote.up", renderVote)
     .on('ajax:error', function(event, data, status, xhr) {
   });
-  $(".answer-vote-container").on('ajax:success', ".answer-vote-down", renderVote)
+  $(".answer-vote-container").on('ajax:success', ".answer-vote.down", renderVote)
     .on('ajax:error', function(event, data, status, xhr) {
   });
 
