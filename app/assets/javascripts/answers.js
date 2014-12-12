@@ -31,4 +31,6 @@ $(document).on('page:change', function() {
   $(".answer-vote-container").on('ajax:success', ".answer-vote-down", renderVote)
     .on('ajax:error', function(event, data, status, xhr) {
   });
+
+
 });

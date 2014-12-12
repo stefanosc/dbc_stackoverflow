@@ -2,6 +2,26 @@ ul.navbar-nav a {
   z-index: 9999;
   color: #666;
 }
-.container.questions {
-  border-bottom: 1px solid #555
+.container {
+  &.questions {
+    border-bottom: 1px solid #555;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    h1 {
+      margin-top: 0;
+    }
+  }
+
+  // &.questions, &.answers {
+
+  // }
+  &.main {
+    font-size: 1.3em;
+    margin-top: 70px;
+  }
+}
+
+.preview h3 {
+  margin-top: 5px;
+  margin-bottom: 15px;
 }

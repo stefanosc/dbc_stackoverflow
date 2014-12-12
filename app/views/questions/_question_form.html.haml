@@ -1,7 +1,21 @@
-.question-form-container
-  %h3 Post a new question
-  = bootstrap_form_for(@question, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-5",remote: true, format: :json) do |f|
-    = f.text_field :title
-    = f.text_area :content, size: "60x12"
-    - button_text = @question.new_record? ? "Post" : "Edit"
-    = f.submit "#{button_text} Question"
+- if @question.new_record?
+  - heaeding_text = "Post a new"
+  - button_text = "Post"
+  - remote = true
+- else
+  - heaeding_text = button_text = "Edit"
+  - remote = false
+%h3 #{heaeding_text} question
+.row.question-form-container.col-sm-6
+  = bootstrap_form_for(@question, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10",remote: remote, format: :json) do |f|
+    = f.text_field :title, class: "question"
+    = f.hidden_field :content
+    .form-group
+      %label.col-sm-2.control-label{:for => "question_text_area"} content
+      .col-sm-10
+        %textarea#question_text_area.form-control.question{cols: "60", rows: "12"}
+    .col-md-offset-10
+      = f.submit "#{button_text} Question"
+.col-sm-6.preview
+  %h3
+  .content
